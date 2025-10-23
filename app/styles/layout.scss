@@ -1,0 +1,165 @@
+.header {
+  background-color: white;
+  padding: 20px 0;
+  box-shadow: var(--box-shadow);
+  position: relative;
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo img {
+    height: 40px;
+  }
+
+  .nav {
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      z-index: 1001;
+
+      .hamburger {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: var(--text-color);
+        position: relative;
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          width: 25px;
+          height: 3px;
+          background-color: var(--text-color);
+          transition: transform 0.3s ease;
+        }
+
+        &::before {
+          top: -8px;
+        }
+
+        &::after {
+          top: 8px;
+        }
+      }
+
+      &.open .hamburger {
+        background: transparent;
+
+        &::before {
+          transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        &::after {
+          transform: rotate(-45deg) translate(7px, -7px);
+        }
+      }
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+
+      li a {
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 500;
+
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+
+      @media (max-width: 768px) {
+        display: none;
+
+        &.open {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background-color: white;
+          flex-direction: column;
+          padding: 20px;
+          box-shadow: var(--box-shadow);
+          z-index: 1000;
+          animation: slideDown 0.3s ease-out;
+
+          li {
+            margin: 10px 0;
+          }
+
+          a {
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+    }
+  }
+}
+
+.footer {
+  background-color: var(--background-color);
+  padding: 20px 0;
+  width: 100%;
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+
+    li a {
+      text-decoration: none;
+      color: var(--secondary-color);
+
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+  }
+}
+
+.flex-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the body takes full viewport height */
+
+  main {
+    flex: 1 0 auto; /* Grow to fill available space, but not shrink below content */
+  }
+
+  footer {
+    flex-shrink: 0; /* Prevent footer from shrinking */
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
