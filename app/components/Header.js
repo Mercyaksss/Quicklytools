@@ -5,20 +5,26 @@ import { useState } from 'react';
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
     <header className="header">
       <div className="container">
         <Link href="/" className="logo">
-          <h2>Quicklytools</h2>
+          <h2>QuicklyTools</h2>
         </Link>
+
         <nav className="nav">
-          <button className={`menu-toggle ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} aria-label="Toggle menu">
+          {/* Hamburger – only visible < 769px */}
+          <button
+            className={`menu-toggle ${isMenuOpen ? 'open' : ''}`}
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
             <span className="hamburger"></span>
           </button>
+
+          {/* Links */}
           <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
             <li><Link href="/" onClick={toggleMenu}>Home</Link></li>
             <li><Link href="/tools/age-calculator" onClick={toggleMenu}>Age Calculator</Link></li>

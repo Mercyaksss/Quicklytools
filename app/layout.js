@@ -3,7 +3,7 @@ import Footer from './components/Footer';
 import './globals.scss';
 
 export const metadata = {
-  title: 'MyTools - Online Utility Tools',
+  title: 'QuicklyTools - Online Utility Tools',
   description: 'A collection of useful online tools like age calculator, salary calculator, and more.',
 };
 
