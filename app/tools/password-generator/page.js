@@ -10,6 +10,7 @@ export default function PasswordGenerator() {
   const [includeNumbers, setIncludeNumbers] = useState(true);
   const [includeSpecial, setIncludeSpecial] = useState(true);
   const [password, setPassword] = useState('');
+  const [copied, setCopied] = useState(false);
 
   const generatePassword = () => {
     const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -26,10 +27,18 @@ export default function PasswordGenerator() {
       newPassword += charPool.charAt(Math.floor(Math.random() * charPool.length));
     }
     setPassword(newPassword);
+    setCopied(false);
   };
 
-  const handleGenerate = () => {
-    generatePassword();
+  const copyToClipboard = async () => {
+    if (!password) return;
+    try {
+      await navigator.clipboard.writeText(password);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      alert('Copy failed. Please select and copy manually.');
+    }
   };
 
   return (
@@ -38,6 +47,7 @@ export default function PasswordGenerator() {
         <h1>Password Generator</h1>
         <p>Create strong, secure passwords instantly with customizable options.</p>
       </section>
+
       <div className="calculator">
         <InputGroup
           label="Password Length"
@@ -46,52 +56,71 @@ export default function PasswordGenerator() {
           onChange={(e) => setLength(Math.max(4, Math.min(32, parseInt(e.target.value) || 12)))}
           min="4"
           max="32"
-          required
         />
-        <div className="input-group checkbox-group">
-          <label>
+
+        {/* CLEAN, NO-INHERITANCE CHECKBOXES */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '18px',
+          margin: '24px 0',
+          padding: '0 4px'
+        }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1rem', cursor: 'pointer' }}>
             <input
               type="checkbox"
               checked={includeUppercase}
               onChange={(e) => setIncludeUppercase(e.target.checked)}
-            /> Include Uppercase Letters
+              style={{ width: '20px', height: '20px', accentColor: '#007bff', cursor: 'pointer' }}
+            />
+            <span>Include Uppercase Letters</span>
           </label>
-          <label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1rem', cursor: 'pointer' }}>
             <input
               type="checkbox"
               checked={includeNumbers}
               onChange={(e) => setIncludeNumbers(e.target.checked)}
-            /> Include Numbers
+              style={{ width: '20px', height: '20px', accentColor: '#007bff', cursor: 'pointer' }}
+            />
+            <span>Include Numbers</span>
           </label>
-          <label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1rem', cursor: 'pointer' }}>
             <input
               type="checkbox"
               checked={includeSpecial}
               onChange={(e) => setIncludeSpecial(e.target.checked)}
-            /> Include Special Characters
+              style={{ width: '20px', height: '20px', accentColor: '#007bff', cursor: 'pointer' }}
+            />
+            <span>Include Special Characters</span>
           </label>
         </div>
-        <button onClick={handleGenerate} className="tool-link">
+
+        <button onClick={generatePassword} className="tool-link" style={{ width: '100%', padding: '14px', marginTop: '10px' }}>
           Generate Password
         </button>
-        {password && <ResultBox title="Generated Password" data={{ Password: password }} />}
+
+        {password && (
+          <div style={{ marginTop: '20px' }}>
+            <ResultBox title="Generated Password" data={{ Password: password }} />
+            <button
+              onClick={copyToClipboard}
+              style={{
+                marginTop: '12px',
+                padding: '10px 16px',
+                backgroundColor: copied ? '#28a745' : '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '0.95rem',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              {copied ? 'Copied!' : 'Copy to Clipboard'}
+            </button>
+          </div>
+        )}
       </div>
-      <section className="content-section">
-        <h2>About Password Generation</h2>
-        <p>
-          A password generator creates strong, unique passwords to protect your online accounts. With options to include uppercase letters, numbers, and special characters, this tool helps you meet security standards and reduce the risk of breaches. Use it to enhance your digital safety today!
-        </p>
-        <h3>Benefits of a Strong Password</h3>
-        <ul className="info-list">
-          <li>Protect against hacking and unauthorized access.</li>
-          <li>Meet complex password requirements for websites.</li>
-          <li>Simplify security management with unique passwords per account.</li>
-        </ul>
-        <h3>Password Security Tips</h3>
-        <p>
-          For optimal security, use passwords at least 12-16 characters long, combining multiple character types. Avoid reusing passwords across sites and consider a password manager to store them safely. Regularly update passwords, especially for sensitive accounts, to maintain protection!
-        </p>
-      </section>
     </div>
   );
 }
